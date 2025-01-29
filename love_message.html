@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To My Love</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: "KaiTi", "楷体", "Microsoft YaHei", "Arial", sans-serif;
+            overflow: hidden;
+            position: relative; /* 为伪元素定位提供参考 */
+        }
+        
+        /* 加载条样式 */
+        .loading-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 4; /* 确保在最上层 */
+        }
+
+        .loading-bar {
+            width: 80%;
+            height: 20px;
+            background-color: #f5b2b2;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .loading-progress {
+            height: 100%;
+            background-color: #ff7f7f;
+            width: 0; /* 初始宽度为0 */
+            transition: width 0.5s; /* 动画效果 */
+        }
+
+        body::before,
+        body::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.65; /* 适中的透明度 */
+            background: linear-gradient(45deg, #ff7f7f, #f5b2b2); /* 中间值颜色 */
+            background-size: 300% 300%;
+            animation: gradientAnimation 10s ease infinite;
+            z-index: 0; /* 确保伪元素在背景下 */
+        }
+        
+        body::after {
+            animation-delay: 5s; /* 延迟动画以创建不同步效果 */
+        }
+        
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* 添加局部渐变效果 */
+        .gradient-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.5; /* 适中的透明度 */
+            background: linear-gradient(45deg, rgba(255, 127, 127, 0.5), rgba(245, 178, 178, 0.5)); /* 局部渐变颜色 */
+            z-index: 1; /* 确保在背景之上 */
+            animation: localGradientAnimation 15s ease infinite; /* 动画效果 */
+        }
+
+        @keyframes localGradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .container {
+            position: relative;
+            width: 80%;
+            height: 80vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2; /* 确保内容在伪元素之上 */
+        }
+        
+        .text {
+            color: white;
+            font-size: 36px;
+            text-align: center;
+            position: absolute;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .input-container {
+            position: absolute;
+            text-align: center;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 2; /* 确保输入框在伪元素之上 */
+            display: none; /* 默认隐藏 */
+        }
+        
+        .input-container label {
+            font-size: 24px;
+            margin-bottom: 5px;
+            display: block;
+            text-align: center;
+        }
+        
+        .input-container input {
+            font-size: 24px;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.8);
+            color: #333;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            height: 40px;
+            width: 200px;
+            text-align: center;
+        }
+        
+        .input-container button {
+            font-size: 24px;
+            padding: 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.8);
+            color: #333;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            height: 40px;
+            width: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        @keyframes textAnim {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            10% {
+                opacity: 1;
+                transform: translateY(20px);
+            }
+            80% {
+                opacity: 1;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .text {
+                font-size: 28px;
+            }
+            .input-container label,
+            .input-container input,
+            .input-container button {
+                font-size: 20px;
+            }
+        }
+
+        @media (orientation: landscape) {
+            .text {
+                font-size: 40px;
+            }
+            .input-container label,
+            .input-container input,
+            .input-container button {
+                font-size: 24px;
+            }
+        }
+
+        /* 提示信息样式 */
+        .mobile-warning {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.9);
+            color: red;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            z-index: 3; /* 确保提示在最上层 */
+            display: none; /* 默认隐藏 */
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-screen" id="loading-screen">
+        <div class="loading-bar">
+            <div class="loading-progress" id="loading-progress"></div>
+        </div>
+    </div>
+    
+    <audio id="background-music" src="打回原形.mp3" preload="auto"></audio>
+    <div class="gradient-layer"></div>
+    <div class="input-container">
+        <label for="key-input">记得你的生日</label>
+        <input type="text" id="key-input" maxlength="4" />
+        <button id="submit-key">确认</button>
+    </div>
+    <div class="container" id="container" style="display: none;"></div>
+    
+    <!-- 提示信息 -->
+    <div class="mobile-warning" id="mobile-warning">
+        请使用电脑查看。
+    </div>
+
+    <script>
+        // 检测设备类型
+        if (/Mobi|Android/i.test(navigator.userAgent)) {
+            // 如果是手机，显示提示信息
+            document.getElementById('mobile-warning').style.display = 'block';
+            document.querySelector('.input-container').style.display = 'none'; // 隐藏输入框
+        }
+
+        // 音频加载完成后隐藏加载条
+        const audio = document.getElementById('background-music');
+        const loadingScreen = document.getElementById('loading-screen');
+        const loadingProgress = document.getElementById('loading-progress');
+
+        audio.addEventListener('canplaythrough', () => {
+            loadingScreen.style.display = 'none'; // 隐藏加载条
+            document.querySelector('.input-container').style.display = 'flex'; // 显示输入框
+            audio.play(); // 播放音乐
+        });
+
+        // 模拟加载进度
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress += 10;
+            loadingProgress.style.width = progress + '%';
+            if (progress >= 100) {
+                clearInterval(interval);
+            }
+        }, 500); // 每500毫秒增加进度
+    </script>
+</body>
+</html> 
